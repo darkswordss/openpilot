@@ -138,7 +138,8 @@ else:
       "/opt/homebrew/include",
       "/usr/local/include",
       "/usr/local/opt/openssl/include",
-      "/opt/homebrew/opt/openssl/include"
+      "/opt/homebrew/opt/openssl/include",
+      "/opt/homebrew/opt/ffmpeg@4/include"
     ]
   else:
     libpath = [
@@ -166,7 +167,7 @@ elif GetOption('ubsan'):
   ldflags = ["-fsanitize=undefined"]
 else:
   ccflags = []
-  ldflags = []
+  ldflags = ["-L/opt/homebrew/opt/ffmpeg@4/lib"]
 
 # no --as-needed on mac linker
 if arch != "Darwin":

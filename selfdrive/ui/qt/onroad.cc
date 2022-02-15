@@ -4,14 +4,13 @@
 
 #include <QDebug>
 
-#include "selfdrive/common/util.h"
 #include "selfdrive/common/timing.h"
 #include "selfdrive/ui/qt/util.h"
+#include <iostream>
 #ifdef ENABLE_MAPS
 #include "selfdrive/ui/qt/maps/map.h"
 #include "selfdrive/ui/qt/maps/map_helpers.h"
 #endif
-
 OnroadWindow::OnroadWindow(QWidget *parent) : QWidget(parent) {
   QVBoxLayout *main_layout  = new QVBoxLayout(this);
   main_layout->setMargin(bdr_s);
@@ -441,17 +440,19 @@ void NvgWindow::drawLaneLines(QPainter &painter, UIState *s) {
   painter.setBrush(bg);
   painter.drawPolygon(scene.track_vertices.v, scene.track_vertices.cnt);
 }
-
-void NvgWindow::drawLead(QPainter &painter, const cereal::ModelDataV2::LeadDataV3::Reader &lead_data, const QPointF &vd) {
+void NvgWindow::drawLead(QPainter &painter, const cereal::ModelDataV2::LeadDataV3::Reader &lead_data, const QPointF &vd)
+{
   const float speedBuff = 10.;
   const float leadBuff = 40.;
   const float d_rel = lead_data.getX()[0];
   const float v_rel = lead_data.getV()[0];
 
   float fillAlpha = 0;
-  if (d_rel < leadBuff) {
+  if (d_rel < leadBuff)
+  {
     fillAlpha = 255 * (1.0 - (d_rel / leadBuff));
-    if (v_rel < 0) {
+    if (v_rel < 0)
+    {
       fillAlpha += 255 * (-1 * (v_rel / speedBuff));
     }
     fillAlpha = (int)(fmin(fillAlpha, 255));
@@ -461,18 +462,22 @@ void NvgWindow::drawLead(QPainter &painter, const cereal::ModelDataV2::LeadDataV
   float x = std::clamp((float)vd.x(), 0.f, width() - sz / 2);
   float y = std::fmin(height() - sz * .6, (float)vd.y());
 
-  float g_xo = sz / 5;
-  float g_yo = sz / 10;
+   painter.setBrush(QColor(218, 202, 37, 255));
 
-  QPointF glow[] = {{x + (sz * 1.35) + g_xo, y + sz + g_yo}, {x, y - g_xo}, {x - (sz * 1.35) - g_xo, y + sz + g_yo}};
-  painter.setBrush(QColor(218, 202, 37, 255));
-  painter.drawPolygon(glow, std::size(glow));
+  
 
-  // chevron
-  QPointF chevron[] = {{x + (sz * 1.25), y + sz}, {x, y}, {x - (sz * 1.25), y + sz}};
-  painter.setBrush(redColor(fillAlpha));
-  painter.drawPolygon(chevron, std::size(chevron));
+  std::ifstream myFile("../../assets/koopa-shell_small.png");
+  if (myFile.fail())
+  {
+    std::cout << "Cant Find File" << std::endl;
+  }
+ 
+  QImage image("../../assets/koopa-shell_small.png");
+
+  painter.drawImage(x, y, image, 0, 0, -1, -1, Qt::AutoColor);
+
 }
+
 
 void NvgWindow::paintGL() {
   const int _width = width();  // for ButtonsWindow
