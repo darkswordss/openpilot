@@ -458,21 +458,13 @@ void NvgWindow::drawLead(QPainter &painter, const cereal::ModelDataV2::LeadDataV
     fillAlpha = (int)(fmin(fillAlpha, 255));
   }
 
-  float sz = std::clamp((25 * 30) / (d_rel / 3 + 30), 15.0f, 30.0f) * 2.35;
-  float x = std::clamp((float)vd.x(), 0.f, width() - sz / 2);
-  float y = std::fmin(height() - sz * .6, (float)vd.y());
+  // float sz = std::clamp((25 * 30) / (d_rel / 3 + 30), 15.0f, 30.0f) * 2.35;
+  // float x = std::clamp((float)vd.x(), 0.f, width() - sz / 2);
+  // float y = std::fmin(height() - sz * .6, (float)vd.y());
 
    painter.setBrush(QColor(218, 202, 37, 255));
-
-  
-
-  std::ifstream myFile("../../assets/koopa-shell_small.png");
-  if (myFile.fail())
-  {
-    std::cout << "Cant Find File" << std::endl;
-  }
  
-  QImage image("../../assets/koopa-shell_small.png");
+  QImage image("/data/openpilot/selfdrive/assets/koopa-shell_small.png");
 
   painter.drawImage(x, y, image, 0, 0, -1, -1, Qt::AutoColor);
 
