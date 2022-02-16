@@ -458,9 +458,9 @@ void NvgWindow::drawLead(QPainter &painter, const cereal::ModelDataV2::LeadDataV
     fillAlpha = (int)(fmin(fillAlpha, 255));
   }
 
-  // float sz = std::clamp((25 * 30) / (d_rel / 3 + 30), 15.0f, 30.0f) * 2.35;
-  // float x = std::clamp((float)vd.x(), 0.f, width() - sz / 2);
-  // float y = std::fmin(height() - sz * .6, (float)vd.y());
+  float sz = std::clamp((25 * 30) / (d_rel / 3 + 30), 15.0f, 30.0f) * 2.35;
+  float x = std::clamp((float)vd.x(), 0.f, width() - sz / 2);
+  float y = std::fmin(height() - sz * .6, (float)vd.y());
 
    painter.setBrush(QColor(218, 202, 37, 255));
  
