@@ -462,11 +462,12 @@ void NvgWindow::drawLead(QPainter &painter, const cereal::ModelDataV2::LeadDataV
   float x = std::clamp((float)vd.x(), 0.f, width() - sz / 2);
   float y = std::fmin(height() - sz * .6, (float)vd.y());
 
-   painter.setBrush(QColor(218, 202, 37, 255));
+  painter.setBrush(QColor(218, 202, 37, 255));
  
-  QImage image("/data/openpilot/selfdrive/assets/koopa-shell_small.png");
+  QPixmap pixmap( "/data/openpilot/selfdrive/assets/koopa-shell_small.png");
 
-  painter.drawImage(x, y, image, 0, 0, -1, -1, Qt::AutoColor);
+  // painter.drawImage(x, y, image, 0, 0, -1, -1);
+  painter.drawPixmap( x-5,  y,  72,  72,pixmap);
 
 }
 
