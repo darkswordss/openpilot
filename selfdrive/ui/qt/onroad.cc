@@ -464,7 +464,7 @@ void NvgWindow::drawLead(QPainter &painter, const cereal::ModelDataV2::LeadDataV
 
   painter.setBrush(QColor(218, 202, 37, 255));
  
-  QPixmap pixmap( "/data/openpilot/selfdrive/assets/koopa-shell_small.png");
+  QPixmap pixmap( "/data/openpilot/selfdrive/assets/red-koopa-shell-small.png");
 
   // painter.drawImage(x, y, image, 0, 0, -1, -1);
   painter.drawPixmap( x-5,  y,  72,  72,pixmap);
