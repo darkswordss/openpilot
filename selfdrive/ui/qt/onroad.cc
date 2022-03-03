@@ -466,8 +466,9 @@ void NvgWindow::drawLead(QPainter &painter, const cereal::ModelDataV2::LeadDataV
  
   QPixmap pixmap( "/data/openpilot/selfdrive/assets/red-koopa-shell-small.png");
 
-  // painter.drawImage(x, y, image, 0, 0, -1, -1);
-  painter.drawPixmap( x-30,  y,  70000/x,  70000/x,pixmap);
+  painter.drawPixmap( x-30,  y,  y*0.25 ,  y*0.25 ,pixmap);
+
+  // std::cout<<"Pixel Size: "<<y*0.25 <<std::endl;
 
 }
 
