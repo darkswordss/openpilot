@@ -286,10 +286,12 @@ void OnroadHud::updateState(const UIState &s) {
   }
   QString maxspeed_str = cruise_set ? QString::number(std::nearbyint(maxspeed)) : "N/A";
   float cur_speed = std::max(0.0, sm["carState"].getCarState().getVEgo() * (s.scene.is_metric ? MS_TO_KPH : MS_TO_MPH));
+  isBreaking = sm["carState"].getCarState().getBrakePressed();
 
   setProperty("is_cruise_set", cruise_set);
   setProperty("speed", QString::number(std::nearbyint(cur_speed)));
   setProperty("maxSpeed", maxspeed_str);
+  setProperty("isBreaking", isBreaking);
   setProperty("speedUnit", s.scene.is_metric ? "km/h" : "mph");
   setProperty("hideDM", cs.getAlertSize() != cereal::ControlsState::AlertSize::NONE);
   setProperty("status", s.status);
@@ -329,10 +331,18 @@ void OnroadHud::paintEvent(QPaintEvent *event) {
   }
 
   // current speed
-  configFont(p, "Open Sans", 176, "Bold");
-  drawText(p, rect().center().x(), 210, speed);
-  configFont(p, "Open Sans", 66, "Regular");
-  drawText(p, rect().center().x(), 290, speedUnit, 200);
+  if (isBreaking)
+  {
+    configFont(p, "Open Sans", 176, "Bold");
+    drawTextBreaking(p, rect().center().x(), 210, speed);
+    configFont(p, "Open Sans", 66, "Regular");
+    drawText(p, rect().center().x(), 290, speedUnit, 200);
+  }else{
+    configFont(p, "Open Sans", 176, "Bold");
+    drawText(p, rect().center().x(), 210, speed);
+    configFont(p, "Open Sans", 66, "Regular");
+    drawText(p, rect().center().x(), 290, speedUnit, 200);
+  }
 
   // engage-ability icon
   if (engageable) {
@@ -354,6 +364,16 @@ void OnroadHud::drawText(QPainter &p, int x, int y, const QString &text, int alp
   real_rect.moveCenter({x, y - real_rect.height() / 2});
 
   p.setPen(QColor(0xff, 0xff, 0xff, alpha));
+  p.drawText(real_rect.x(), real_rect.bottom(), text);
+}
+
+void OnroadHud::drawTextBreaking(QPainter &p, int x, int y, const QString &text, int alpha) {
+  QFontMetrics fm(p.font());
+  QRect init_rect = fm.boundingRect(text);
+  QRect real_rect = fm.boundingRect(init_rect, 0, text);
+  real_rect.moveCenter({x, y - real_rect.height() / 2});
+
+  p.setPen(QColor(0xff, 0x00, 0x00, alpha));
   p.drawText(real_rect.x(), real_rect.bottom(), text);
 }
 

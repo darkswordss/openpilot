@@ -53,6 +53,7 @@ public:
 private:
   void drawIcon(QPainter &p, int x, int y, QPixmap &img, QBrush bg, float opacity);
   void drawText(QPainter &p, int x, int y, const QString &text, int alpha = 255);
+  void drawTextBreaking(QPainter &p, int x, int y, const QString &text, int alpha = 255);
   void paintEvent(QPaintEvent *event) override;
 
   QPixmap engage_img;
@@ -63,6 +64,7 @@ private:
   QString speedUnit;
   QString maxSpeed;
   bool is_cruise_set = false;
+  bool isBreaking = false;
   bool engageable = false;
   bool dmActive = false;
   bool hideDM = false;
